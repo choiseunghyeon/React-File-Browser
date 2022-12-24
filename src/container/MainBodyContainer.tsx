@@ -20,22 +20,7 @@ export const MainBodyContainer = function () {
     dispatch(changeCurrentNodeId(nodeId))
   }, [])
   if (!children) return null
-  // const [selectedNodeId, setSelectedNodeId] = useState('');
 
-  // const changeSelectedNodeId = useCallback((event) => {
-  //     setSelectedNodeId(event.target.id);
-  // }, []);
-
-  // const handleDblClick = async () => {
-  //     const selectedNode = getNodeInTree(currentNode, selectedNodeId);
-  //     if (!isDirectory(selectedNode)) return;
-
-  //     updateChildren(selectedNode);
-  //     changeCurrentNodeId(selectedNode.id);
-  //     updateNodeHistory(selectedNode.id);
-  // }
-
-  //   if (!currentNode.children) return null
   return (
     <div className="body">
       {children.map(node => (

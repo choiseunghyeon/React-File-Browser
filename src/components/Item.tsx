@@ -1,4 +1,5 @@
 import { useCallback } from "react"
+import { FILES_TEST_ID, FILE_TYPE_TEST_ID } from "../constants/test"
 import { INode } from "../store/root"
 import { isDirectory } from "../store/utils"
 export interface IItemProps {
@@ -17,8 +18,8 @@ export default function Item({ node, onChangeNodeId }: IItemProps) {
   }, [id])
 
   return (
-    <div id={id} onDoubleClick={onDblClick}>
-      <span>{isDirectory(type) ? "폴더" : "파일"}</span> {name}
+    <div data-testid={FILES_TEST_ID} id={id} onDoubleClick={onDblClick}>
+      <span data-testid={FILE_TYPE_TEST_ID}>{isDirectory(type) ? "폴더" : "파일"}</span> {name}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { memo, useCallback } from "react"
+import { PATH_LAYER_BUTTON_TEST_ID, PATH_TEST_ID } from "../constants/test"
 import { INode } from "../store/root"
 import { IPath } from "../store/selector/selector"
 
@@ -13,11 +14,11 @@ export default memo(function Path({ path, onChangeNodeId }: IPathProps) {
     onChangeNodeId(id)
   }, [id])
   return (
-    <div>
+    <div data-testid={PATH_TEST_ID}>
       <span>
         <span onClick={onClick}>{name}</span>
         {hasDirectory && (
-          <div style={{ display: "inline-block" }}>
+          <div style={{ display: "inline-block" }} data-testid={PATH_LAYER_BUTTON_TEST_ID}>
             <span> {" >"}</span>
           </div>
         )}

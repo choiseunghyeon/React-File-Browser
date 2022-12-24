@@ -1,5 +1,6 @@
 import { useCallback, useState, memo } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { CLOSE_SIDE_NODE_TEST_ID, OPEN_SIDE_NODE_TEST_ID, SIDE_NODE_TEST_ID } from "../constants/test"
 import { useChangeNodeId } from "../hooks"
 import { useAppSelector } from "../store/hooks"
 import { changeCurrentNodeId, rootNodeId, toggleSideBarNode } from "../store/root"
@@ -34,9 +35,19 @@ const MemoizedRecursiveTreeContainer = memo(function RecursiveTreeContainer({ no
 
   return (
     <>
-      <div>
+      <div data-testid={SIDE_NODE_TEST_ID}>
         <div style={{ marginLeft: marginLeft }}>
-          {dirChilden ? showChildren ? <button onClick={toggleShowChildren}>{" / "}</button> : <button onClick={toggleShowChildren}>{" > "}</button> : null}
+          {dirChilden ? (
+            showChildren ? (
+              <button data-testid={CLOSE_SIDE_NODE_TEST_ID} onClick={toggleShowChildren}>
+                {" / "}
+              </button>
+            ) : (
+              <button data-testid={OPEN_SIDE_NODE_TEST_ID} onClick={toggleShowChildren}>
+                {" > "}
+              </button>
+            )
+          ) : null}
           <span onClick={onChangeNodeId}>{name}</span>
         </div>
       </div>

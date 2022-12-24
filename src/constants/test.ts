@@ -1,0 +1,14 @@
+// Navigation
+export const PATH_TEST_ID = "PATH_TEST_ID"
+export const PATH_LAYER_BUTTON_TEST_ID = "PATH_LAYER_BUTTON_TEST_ID"
+export const PATH_LAYER_TEST_ID = "PATH_LAYER_TEST_ID"
+
+// Side bar
+export const OPEN_SIDE_NODE_TEST_ID = "OPEN_SIDE_NODE_TEST_ID"
+export const CLOSE_SIDE_NODE_TEST_ID = "CLOSE_SIDE_NODE_TEST_ID"
+export const SIDE_NODE_TEST_ID = "SIDE_NODE_TEST_ID"
+
+// Main
+
+export const FILES_TEST_ID = "FILES_TEST_ID"
+export const FILE_TYPE_TEST_ID = "FILE_TYPE_TEST_ID"

@@ -37,6 +37,13 @@ export const state: IState = {
       name: "새폴더2",
       type: "dir",
       parentId: "2",
+      children: ["3"],
+    },
+    "4": {
+      id: "4",
+      name: "index.ts",
+      type: "file",
+      parentId: "3",
       children: null,
     },
   },

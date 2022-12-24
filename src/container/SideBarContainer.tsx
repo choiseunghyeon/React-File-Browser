@@ -19,7 +19,7 @@ const MemoizedRecursiveTreeContainer = memo(function RecursiveTreeContainer({ no
   const dispatch = useDispatch()
 
   const node = useAppSelector(state => selectNodeById(state, nodeId))
-  const { showChildren } = useAppSelector(state => selectSideBarNodeById(state, nodeId))
+  const { showChildren, selected } = useAppSelector(state => selectSideBarNodeById(state, nodeId))
   const dirChilden = useAppSelector(state => selectDirChildrenById(state, nodeId), shallowEqual)
 
   const marginLeft = level * 10
@@ -35,10 +35,10 @@ const MemoizedRecursiveTreeContainer = memo(function RecursiveTreeContainer({ no
 
   return (
     <>
-      <div data-testid={SIDE_NODE_TEST_ID}>
+      <div data-testid={SIDE_NODE_TEST_ID} style={{ backgroundColor: selected ? "darkgray" : "inherit" }}>
         <div style={{ marginLeft: marginLeft }}>
-          {dirChilden ? (
-            showChildren ? (
+          {dirChilden &&
+            (showChildren ? (
               <button data-testid={CLOSE_SIDE_NODE_TEST_ID} onClick={toggleShowChildren}>
                 {" / "}
               </button>
@@ -46,15 +46,14 @@ const MemoizedRecursiveTreeContainer = memo(function RecursiveTreeContainer({ no
               <button data-testid={OPEN_SIDE_NODE_TEST_ID} onClick={toggleShowChildren}>
                 {" > "}
               </button>
-            )
-          ) : null}
+            ))}
           <span onClick={onChangeNodeId}>{name}</span>
         </div>
       </div>
-      {children ? (
+      {dirChilden ? (
         <div style={{ opacity: showChildren ? 1 : 0 }}>
-          {children.map(nodeId => (
-            <MemoizedRecursiveTreeContainer key={nodeId} nodeId={nodeId} level={level + 1} />
+          {dirChilden.map(child => (
+            <MemoizedRecursiveTreeContainer key={child.id} nodeId={child.id} level={level + 1} />
           ))}
         </div>
       ) : null}

@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from ".."
 import { IFlatMap, INode, ISideBarMap, ISideBarNode, NodeId, NodeType } from "../root"
-import { isDirectory } from "../utils"
+import { getParentNodeListById, isDirectory } from "../utils"
 
 const selectFlatMap = (state: RootState) => state.flatMap
 const selectSideBarMap = (state: RootState) => state.sideBarMap
@@ -22,7 +22,9 @@ export const selectDirChildrenById = createSelector([selectFlatMap, passNodeId],
   const children = getChildrenById(flatMap, id)
   if (!children) return null
 
-  return children.filter(node => node.type === "dir")
+  const dirChildren = children.filter(node => node.type === "dir")
+  if (dirChildren.length === 0) return null
+  return dirChildren
 })
 
 export const selectNodeById = createSelector([selectFlatMap, passNodeId], (flatMap: IFlatMap, nodeId: string) => {
@@ -59,21 +61,4 @@ const getChildrenById = (map, nodeId): INode[] | null => {
 
   const children = node.children.map(childNodeId => map[childNodeId])
   return children
-}
-const getParentNodeListById = (map, nodeId): INode[] | null => {
-  let result: INode[] = []
-
-  let node: INode = map[nodeId]
-  if (!node) return null
-
-  do {
-    result.push({ ...node })
-    if (node.parentId === null) {
-      break
-    } else {
-      node = map[node.parentId]
-    }
-  } while (node)
-
-  return result.reverse()
 }

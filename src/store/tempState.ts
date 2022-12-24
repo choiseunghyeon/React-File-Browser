@@ -11,6 +11,7 @@ export const state: IState = {
     "2": {
       id: "2",
       showChildren: true,
+      selected: true,
     },
     "3": {
       id: "3",
@@ -37,7 +38,7 @@ export const state: IState = {
       name: "새폴더2",
       type: "dir",
       parentId: "2",
-      children: ["3"],
+      children: ["4"],
     },
     "4": {
       id: "4",

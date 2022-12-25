@@ -6,7 +6,6 @@ import SideBarContainer from "./container/SideBarContainer"
 import StatusbarContainer from "./container/StatusBarContainer"
 import Navigation from "./components/Navigation"
 import { useAppDispatch } from "./store/hooks"
-import { fetchFiles, initFetchFiles } from "./store/middleware/apiSaga"
 import { changeCurrentNodeId } from "./store/reducer"
 
 export default function App() {
@@ -14,6 +13,7 @@ export default function App() {
   useLayoutEffect(() => {
     dispatch(changeCurrentNodeId("root"))
   }, [])
+
   return (
     <>
       <div className="app-container">

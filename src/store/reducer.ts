@@ -1,9 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit"
-import { state } from "./tempState"
-import { createNodeFromFile, createSideBarNodeFromNode, getChilrenDirNodeList, getParentNodeListById, IFile, isDirectory } from "./utils"
+import { getParentNodeListById } from "./utils"
 
 export interface IState {
-  // path: string
   // init 단계에서 nodeId 없음
   currentNodeId: string | null
   sideBarMap: {
@@ -52,10 +50,6 @@ const root: IState = {
     },
   },
 }
-interface IUpdateNodesFromFilesPayload {
-  files: IFile[]
-  parentId: string | null
-}
 
 type IUpdateSideNodesPayload = ISideBarNode[]
 type IUpdateNodesPayload = {
@@ -94,14 +88,6 @@ const rootReducer = createReducer(root, builder => {
     .addCase(showSideBarNode, (state, action) => {
       const nodeId = action.payload
       state.sideBarMap[nodeId].showChildren = true
-
-      // // sidebarMap 없으면 만들기
-      // const dirNodes = getChilrenDirNodeList(state.flatMap, nodeId)
-      // if (!dirNodes) return
-      // dirNodes.forEach(node => {
-      //   const sideBarNode = createSideBarNodeFromNode(node)
-      //   state.sideBarMap[node.id] = sideBarNode
-      // })
     })
     .addCase(updateSideNodes, (state, action) => {
       const sideNodes = action.payload

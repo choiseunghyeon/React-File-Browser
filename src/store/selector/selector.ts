@@ -8,9 +8,9 @@ const selectSideBarMap = (state: RootState) => state.sideBarMap
 export const selectCurrentNodeId = (state: RootState) => {
   return state.currentNodeId
 }
-
 // pass prefix는 reselect에서 parameter 전달용 (state, id) => id의 경우 id 전달용 함수
 const passNodeId = (state: RootState, id: string) => id
+
 export const selectCurrentNodeChildren = createSelector([selectFlatMap, selectCurrentNodeId], (flatMap, id) => {
   const children = getChildrenById(flatMap, id)
   if (!children) return null

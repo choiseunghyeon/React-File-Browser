@@ -1,6 +1,5 @@
 import { memo, useCallback } from "react"
 import { PATH_LAYER_BUTTON_TEST_ID, PATH_TEST_ID } from "../constants/test"
-import { INode } from "../store/reducer"
 import { IPath } from "../store/selector/selector"
 
 export interface IPathProps {

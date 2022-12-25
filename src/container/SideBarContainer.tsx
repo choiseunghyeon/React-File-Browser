@@ -4,7 +4,8 @@ import { CLOSE_SIDE_NODE_TEST_ID, OPEN_SIDE_NODE_TEST_ID, SIDE_NODE_TEST_ID } fr
 import { useChangeNodeId } from "../hooks"
 import { useAppSelector } from "../store/hooks"
 import { changeCurrentNodeId, hideSideBarNode, rootNodeId, showSideBarNode } from "../store/reducer"
-import { selectDirChildrenById, selectNodeById, selectSideBarNodeById } from "../store/selector/selector"
+import { IComponentSideBarNode, selectDirChildrenById, selectNodeById, selectSideBarNodeById } from "../store/selector/selector"
+import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io"
 
 const SideBarContainer = function () {
   return (
@@ -18,12 +19,9 @@ export default SideBarContainer
 const MemoizedRecursiveTreeContainer = memo(function RecursiveTreeContainer({ nodeId, level }: any) {
   const dispatch = useDispatch()
 
-  const node = useAppSelector(state => selectNodeById(state, nodeId))
-  const sideBarNode = useAppSelector(state => selectSideBarNodeById(state, nodeId))
-  const dirChilden = useAppSelector(state => selectDirChildrenById(state, nodeId), shallowEqual)
+  const { name, showChildren, selected, sideNodeIds } = useAppSelector(state => selectSideBarNodeById(state, nodeId), shallowEqual)
 
   const marginLeft = level * 10
-  const { name, children } = node
 
   const onChangeNodeId = useCallback((): void => {
     dispatch(changeCurrentNodeId(nodeId))
@@ -37,30 +35,20 @@ const MemoizedRecursiveTreeContainer = memo(function RecursiveTreeContainer({ no
     dispatch(hideSideBarNode(nodeId))
   }, [nodeId])
 
-  if (!sideBarNode) return null
-  const { showChildren, selected } = sideBarNode
   return (
     <>
       <div data-testid={SIDE_NODE_TEST_ID} style={{ backgroundColor: selected ? "darkgray" : "inherit" }}>
         <div style={{ marginLeft: marginLeft }}>
-          {showChildren === true && (
-            <button data-testid={CLOSE_SIDE_NODE_TEST_ID} onClick={hide}>
-              {" / "}
-            </button>
-          )}
-          {showChildren === false && (
-            <button data-testid={OPEN_SIDE_NODE_TEST_ID} onClick={show}>
-              {" > "}
-            </button>
-          )}
-
+          {showChildren === true && <IoIosArrowDown data-testid={CLOSE_SIDE_NODE_TEST_ID} onClick={hide} />}
+          {showChildren === false && <IoIosArrowForward data-testid={OPEN_SIDE_NODE_TEST_ID} onClick={show} />}
+          {showChildren === null && <IoIosArrowForward style={{ opacity: 0 }} />}
           <span onClick={onChangeNodeId}>{name}</span>
         </div>
       </div>
-      {dirChilden ? (
+      {showChildren === true && sideNodeIds ? (
         <div style={{ display: showChildren ? "block" : "none" }}>
-          {dirChilden.map(child => (
-            <MemoizedRecursiveTreeContainer key={child.id} nodeId={child.id} level={level + 1} />
+          {sideNodeIds.map(nodeId => (
+            <MemoizedRecursiveTreeContainer key={nodeId} nodeId={nodeId} level={level + 1} />
           ))}
         </div>
       ) : null}

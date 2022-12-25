@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from ".."
-import { IFlatMap, INode, ISideBarMap, ISideBarNode, NodeId, NodeType } from "../reducer"
-import { getParentNodeListById, isDirectory } from "../utils"
+import { IFlatMap, INode, ISideBarMap, ISideBarNode, NodeId } from "../reducer"
+import { getChilrenDirNodeList, getParentNodeListById, isDirectory } from "../utils"
 
 export const selectFlatMap = (state: RootState) => state.flatMap
 const selectSideBarMap = (state: RootState) => state.sideBarMap
@@ -31,8 +31,24 @@ export const selectNodeById = createSelector([selectFlatMap, passNodeId], (flatM
   return flatMap[nodeId]
 })
 
-export const selectSideBarNodeById = createSelector([selectSideBarMap, passNodeId], (sideBarMap: ISideBarMap, nodeId: string): ISideBarNode => {
-  return sideBarMap[nodeId]
+export interface IComponentSideBarNode extends ISideBarNode {
+  name: string
+  sideNodeIds: string[] | null
+}
+
+export const selectSideBarNodeById = createSelector([selectFlatMap, selectSideBarMap, passNodeId], (flatMap: IFlatMap, sideBarMap: ISideBarMap, nodeId: string): IComponentSideBarNode => {
+  // name children showChildren selected
+  const { name } = flatMap[nodeId]
+  const { showChildren, selected } = sideBarMap[nodeId]
+  const dirChildren = getChilrenDirNodeList(flatMap, nodeId)
+  let sideNodeIds: string[] | null = null
+  if (dirChildren) {
+    const dirIds = dirChildren.map(dir => dir.id)
+    const sideNodes = dirIds.map(nodeId => sideBarMap[nodeId]).filter(sideNode => sideNode)
+    sideNodeIds = sideNodes.map(sideNode => sideNode.id)
+  }
+
+  return { id: nodeId, name, showChildren, selected, sideNodeIds }
 })
 
 export interface IPath {

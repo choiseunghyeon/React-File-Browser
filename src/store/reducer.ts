@@ -65,7 +65,6 @@ type IUpdateNodesPayload = {
 export const changeCurrentNodeId = createAction<NodeId>("node/changeCurrentNodeId")
 export const showSideBarNode = createAction<NodeId>("node/showSideBarNode")
 export const hideSideBarNode = createAction<NodeId>("node/hideSideBarNode")
-export const updateNodesFromFiles = createAction<IUpdateNodesFromFilesPayload>("node/updateNodesFromFiles")
 export const updateNodes = createAction<IUpdateNodesPayload>("node/updateNodes")
 export const updateSideNodes = createAction<IUpdateSideNodesPayload>("sideNode/updateSideNodes")
 export const showError = createAction<string>("node/showError")
@@ -79,6 +78,7 @@ const rootReducer = createReducer(root, builder => {
 
       const sideNode = state.sideBarMap[nodeId]
       if (sideNode) {
+        // 보여지는 상태가 아니면 보여지도록 수정
         const parentNodeList = getParentNodeListById(state.flatMap, nodeId)
         if (!parentNodeList) return
         // 자기 자신 제외 상위 sideNode showChildren true로 전환
@@ -113,23 +113,14 @@ const rootReducer = createReducer(root, builder => {
       const nodeId = action.payload
       state.sideBarMap[nodeId].showChildren = false
     })
-    .addCase(updateNodesFromFiles, (state, action) => {
-      const { files, parentId } = action.payload
-      const nodes = files.map(file => createNodeFromFile(file, parentId))
-
-      if (parentId) {
-        const nodeIds = nodes.map(node => node.id)
-        state.flatMap[parentId].children = nodeIds
-      }
-
-      nodes.forEach(node => (state.flatMap[node.id] = node))
-    })
     .addCase(updateNodes, (state, action) => {
       const { nodes, parentId } = action.payload
 
       if (parentId) {
+        if (!state.flatMap[parentId].children) state.flatMap[parentId].children = []
         const nodeIds = nodes.map(node => node.id)
-        state.flatMap[parentId].children = nodeIds
+        const addableNodeIds = nodeIds.filter(nodeId => state.flatMap[parentId].children?.every(childId => nodeId !== childId))
+        state.flatMap[parentId].children?.push(...addableNodeIds)
       }
 
       nodes.forEach(node => (state.flatMap[node.id] = node))

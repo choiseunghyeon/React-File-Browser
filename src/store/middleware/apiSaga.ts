@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit"
 import { call, put, select, takeLatest } from "redux-saga/effects"
 import api from "../../api/fileBrowser"
-import { changeCurrentNodeId, IFlatMap, showError, updateNodes, updateNodesFromFiles, updateSideNodes } from "../reducer"
+import { changeCurrentNodeId, IFlatMap, showError, updateNodes, updateSideNodes } from "../reducer"
 import { selectFlatMap } from "../selector/selector"
 import { createNodeFromFile, getAbsolutePathIn, getChilrenDirNodeList } from "../utils"
 const INIT_FILES_FETCH_REQUESTED = "node/FILES_FETCH_REQUESTED"
@@ -20,9 +20,11 @@ export const fetchFiles = createAction<IFetchFilesPayload>(FILES_FETCH_REQUESTED
 export const failFetchFiles = createAction<IFetchFilesPayload>(FILES_FETCH_FAILED)
 function* initFetchFilesSaga() {
   const path = "C:/BUIS_HOME"
+  const parentId = "root"
   try {
     const files = yield call(api.getFiles, path, "all")
-    yield put(updateNodesFromFiles({ files, parentId: "root" }))
+    const nodes = files.map(dir => createNodeFromFile(dir, parentId))
+    yield put(updateNodes({ nodes, parentId }))
     yield put(changeCurrentNodeId("root"))
   } catch (e: any) {
     yield put(showError(e.message))
@@ -33,7 +35,8 @@ function* fetchFilesSaga(action) {
   const { path, type, parentId } = action.payload
   try {
     const files = yield call(api.getFiles, path, type)
-    yield put(updateNodesFromFiles({ files, parentId }))
+    const nodes = files.map(dir => createNodeFromFile(dir, parentId))
+    yield put(updateNodes({ nodes, parentId }))
   } catch (e: any) {
     yield put(showError(e.message))
   }
@@ -79,20 +82,24 @@ function* fetchFilesByNodeIdSaga(action) {
 
   try {
     // dir, file 둘다 필요한지 file만 필요한지 판별
+    // children 요청 안한 경우
     if (!node.children) {
-      // files 요청
       const files = yield call(api.getFiles, path, "all")
-      yield put(updateNodesFromFiles({ files, parentId: nodeId }))
-    } else {
-      // directory만 있는 경우 file만 따로 요청
-      // 단, server에서 directory만 가지고 있는 경우도 있을 수 있음.. 나중에 고민
-      // file 따로 요청
-      const dirNodes = getChilrenDirNodeList(flatMap, nodeId)
-      if (!dirNodes) return
-      if (dirNodes.length !== node.children.length) return
+      const nodes = files.map(dir => createNodeFromFile(dir, nodeId))
 
+      yield put(updateNodes({ nodes, parentId: nodeId }))
+      return
+    }
+
+    const dirs = getChilrenDirNodeList(flatMap, nodeId)
+    // file만 있는 경우
+    if (!dirs) return
+    // directory만 먼저 가져온 경우
+    if (dirs.length === node.children.length) {
       const files = yield call(api.getFiles, path, "file")
-      yield put(updateNodesFromFiles({ files, parentId: nodeId }))
+      const nodes = files.map(dir => createNodeFromFile(dir, nodeId))
+      yield put(updateNodes({ nodes, parentId: nodeId }))
+      return
     }
   } catch (e: any) {
     yield put(showError(e.message))

@@ -8,7 +8,7 @@ import { isDirectory } from "../store/utils"
 
 export const MainBodyContainer = function () {
   const dispatch = useDispatch()
-  const children = useAppSelector(selectCurrentNodeChildren)
+  const children = useAppSelector(selectCurrentNodeChildren, shallowEqual)
   const onChangeNodeId = useCallback((nodeId: string): void => {
     dispatch(changeCurrentNodeId(nodeId))
   }, [])

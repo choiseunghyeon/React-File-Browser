@@ -1,6 +1,6 @@
 import React from "react"
 import HistoryContainer from "../container/HistoryContainer"
-import PathContainer from "../container/NavContainer"
+import PathContainer from "../container/PathContainer"
 
 function Navigation() {
   return (

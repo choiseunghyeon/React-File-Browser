@@ -1,18 +1,20 @@
-import { IFlatMap, INode, ISideBarNode, NodeType } from "./root"
+import { IFlatMap, INode, ISideBarNode, NodeType } from "./reducer"
 
 export const isDirectory = (type: NodeType) => {
   return type === "dir"
 }
 
-export const getAbsolutePathIn = (flatMap, id) => {
-  let result: string[] = []
-  let node = flatMap[id]
+export const getAbsolutePathIn = (map, id) => {
+  let pathNames: string[] = []
+  let node = map[id]
 
   while (node) {
-    result.push(node.name)
-    node = flatMap[node.parentNodeId]
+    pathNames.push(node.name)
+    node = map[node.parentId]
   }
-  return result.reverse().join("/")
+
+  const result = pathNames.reverse().join("/")
+  return result
 }
 
 export const getParentNodeListById = (map: IFlatMap, nodeId: string): INode[] | null => {
@@ -31,4 +33,36 @@ export const getParentNodeListById = (map: IFlatMap, nodeId: string): INode[] | 
   } while (node)
 
   return result.reverse()
+}
+
+export interface IFile {
+  type: NodeType
+  name: string
+}
+let nodeId = 1
+export const createNodeFromFile = (file: IFile, parentId: string | null): INode => {
+  return {
+    id: "" + nodeId++,
+    parentId,
+    type: file.type,
+    name: file.name,
+    children: null,
+  }
+}
+
+export const createSideBarNodeFromNode = (node: INode): ISideBarNode => {
+  return {
+    id: node.id,
+    showChildren: false,
+  }
+}
+
+export const getChilrenDirNodeList = (map: IFlatMap, nodeId: string): INode[] | null => {
+  const childNodeIds = map[nodeId].children
+  if (!childNodeIds) return null
+
+  const dirNodeIds = childNodeIds.filter(nodeId => isDirectory(map[nodeId].type))
+  if (dirNodeIds.length === 0) return null
+
+  return dirNodeIds.map(nodeId => map[nodeId])
 }

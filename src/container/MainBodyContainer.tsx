@@ -1,21 +1,14 @@
-import React, { useCallback, useState } from "react"
-import { useDispatch } from "react-redux"
-import Item from "../components/Item"
+import { useCallback } from "react"
+import { shallowEqual, useDispatch } from "react-redux"
+import { FileItem, FolderItem } from "../components/Item"
 import { useAppSelector } from "../store/hooks"
-import { changeCurrentNodeId } from "../store/root"
-import { selectChildrenById, selectCurrentNodeId } from "../store/selector/selector"
-
-// interface IMainBodyContainerProps {
-//     currentNode: IRenderTree;
-//     updateChildren: Function;
-//     changeCurrentNodeId: Function;
-//     updateNodeHistory: Function;
-// }
+import { changeCurrentNodeId } from "../store/reducer"
+import { selectCurrentNodeChildren } from "../store/selector/selector"
+import { isDirectory } from "../store/utils"
 
 export const MainBodyContainer = function () {
   const dispatch = useDispatch()
-  const currentNodeId = useAppSelector(selectCurrentNodeId)
-  const children = useAppSelector(state => selectChildrenById(state, currentNodeId))
+  const children = useAppSelector(selectCurrentNodeChildren)
   const onChangeNodeId = useCallback((nodeId: string): void => {
     dispatch(changeCurrentNodeId(nodeId))
   }, [])
@@ -23,9 +16,9 @@ export const MainBodyContainer = function () {
 
   return (
     <div className="body">
-      {children.map(node => (
-        <Item key={node.id} node={node} onChangeNodeId={onChangeNodeId} />
-      ))}
+      {children.map(node => {
+        return isDirectory(node.type) ? <FolderItem key={node.id} node={node} onChangeNodeId={onChangeNodeId} /> : <FileItem key={node.id} node={node} />
+      })}
     </div>
   )
 }

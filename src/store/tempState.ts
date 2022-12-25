@@ -1,11 +1,11 @@
-import { IState } from "./root"
+import { IState } from "./reducer"
 
 export const state: IState = {
   // path: "C:/",
   currentNodeId: "2",
   sideBarMap: {
-    "1": {
-      id: "1",
+    root: {
+      id: "root",
       showChildren: true,
     },
     "2": {
@@ -19,8 +19,8 @@ export const state: IState = {
     },
   },
   flatMap: {
-    "1": {
-      id: "1",
+    root: {
+      id: "root",
       name: "C:",
       type: "dir",
       parentId: null,
@@ -30,7 +30,7 @@ export const state: IState = {
       id: "2",
       name: "새폴더",
       type: "dir",
-      parentId: "1",
+      parentId: "root",
       children: ["3"],
     },
     "3": {
@@ -52,8 +52,8 @@ export const state: IState = {
 // {
 //   path: "C:/",
 //   flatMap: {
-//     "1": {
-//       id: "1",
+//     "root": {
+//       id: "root",
 //       name: "$Recycle.Bin",
 //       type: "dir",
 //       parentId: "root",
@@ -120,7 +120,7 @@ export const state: IState = {
 //           parentId: "8",
 //         },
 //         {
-//           id: "51",
+//           id: "5root",
 //           name: "Setup",
 //           type: "dir",
 //           parentId: "8",
@@ -175,62 +175,62 @@ export const state: IState = {
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "10": {
-//       id: "10",
+//     "root0": {
+//       id: "root0",
 //       name: "Config.Msi",
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "11": {
-//       id: "11",
+//     "rootroot": {
+//       id: "rootroot",
 //       name: "CrossEX.sig",
 //       type: "file",
 //       parentId: "root",
 //     },
-//     "12": {
-//       id: "12",
+//     "root2": {
+//       id: "root2",
 //       name: "cypress-testbed",
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "13": {
-//       id: "13",
+//     "root3": {
+//       id: "root3",
 //       name: "Documents and Settings",
 //       type: "file",
 //       parentId: "root",
 //     },
-//     "14": {
-//       id: "14",
+//     "root4": {
+//       id: "root4",
 //       name: "DumpStack.log",
 //       type: "file",
 //       parentId: "root",
 //     },
-//     "15": {
-//       id: "15",
+//     "root5": {
+//       id: "root5",
 //       name: "DumpStack.log.tmp",
 //       type: "file",
 //       parentId: "root",
 //     },
-//     "16": {
-//       id: "16",
-//       name: "ffmpeg-20200814-a762fd2-win64-static",
+//     "root6": {
+//       id: "root6",
+//       name: "ffmpeg-202008root4-a762fd2-win64-static",
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "17": {
-//       id: "17",
+//     "root7": {
+//       id: "root7",
 //       name: "gulp-test",
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "18": {
-//       id: "18",
+//     "root8": {
+//       id: "root8",
 //       name: "hiberfil.sys",
 //       type: "file",
 //       parentId: "root",
 //     },
-//     "19": {
-//       id: "19",
+//     "root9": {
+//       id: "root9",
 //       name: "immer",
 //       type: "dir",
 //       parentId: "root",
@@ -241,8 +241,8 @@ export const state: IState = {
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "21": {
-//       id: "21",
+//     "2root": {
+//       id: "2root",
 //       name: "JS_pattern_test",
 //       type: "dir",
 //       parentId: "root",
@@ -301,8 +301,8 @@ export const state: IState = {
 //       type: "dir",
 //       parentId: "root",
 //     },
-//     "31": {
-//       id: "31",
+//     "3root": {
+//       id: "3root",
 //       name: "pagefile.sys",
 //       type: "file",
 //       parentId: "root",
@@ -333,7 +333,7 @@ export const state: IState = {
 //     },
 //     "36": {
 //       id: "36",
-//       name: "Python310",
+//       name: "Python3root0",
 //       type: "dir",
 //       parentId: "root",
 //     },
@@ -361,8 +361,8 @@ export const state: IState = {
 //       type: "file",
 //       parentId: "root",
 //     },
-//     "41": {
-//       id: "41",
+//     "4root": {
+//       id: "4root",
 //       name: "System Volume Information",
 //       type: "dir",
 //       parentId: "root",
@@ -422,8 +422,8 @@ export const state: IState = {
 //       parentId: "8",
 //       children: [],
 //     },
-//     "51": {
-//       id: "51",
+//     "5root": {
+//       id: "5root",
 //       name: "Setup",
 //       type: "dir",
 //       parentId: "8",
@@ -432,25 +432,25 @@ export const state: IState = {
 //           id: "59",
 //           name: "BaekSeokManager.bat",
 //           type: "file",
-//           parentId: "51",
+//           parentId: "5root",
 //         },
 //         {
 //           id: "60",
 //           name: "BaekSeokManager.exe",
 //           type: "file",
-//           parentId: "51",
+//           parentId: "5root",
 //         },
 //         {
-//           id: "61",
+//           id: "6root",
 //           name: "IFUDD75.inf",
 //           type: "file",
-//           parentId: "51",
+//           parentId: "5root",
 //         },
 //         {
 //           id: "62",
 //           name: "Readme.txt",
 //           type: "file",
-//           parentId: "51",
+//           parentId: "5root",
 //         },
 //       ],
 //     },
@@ -500,25 +500,25 @@ export const state: IState = {
 //       id: "59",
 //       name: "BaekSeokManager.bat",
 //       type: "file",
-//       parentId: "51",
+//       parentId: "5root",
 //     },
 //     "60": {
 //       id: "60",
 //       name: "BaekSeokManager.exe",
 //       type: "file",
-//       parentId: "51",
+//       parentId: "5root",
 //     },
-//     "61": {
-//       id: "61",
+//     "6root": {
+//       id: "6root",
 //       name: "IFUDD75.inf",
 //       type: "file",
-//       parentId: "51",
+//       parentId: "5root",
 //     },
 //     "62": {
 //       id: "62",
 //       name: "Readme.txt",
 //       type: "file",
-//       parentId: "51",
+//       parentId: "5root",
 //     },
 //     root: {
 //       id: "root",
@@ -527,7 +527,7 @@ export const state: IState = {
 //       parentId: null,
 //       children: [
 //         {
-//           id: "1",
+//           id: "root",
 //           name: "$Recycle.Bin",
 //           type: "dir",
 //           parentId: "root",
@@ -581,61 +581,61 @@ export const state: IState = {
 //           parentId: "root",
 //         },
 //         {
-//           id: "10",
+//           id: "root0",
 //           name: "Config.Msi",
 //           type: "dir",
 //           parentId: "root",
 //         },
 //         {
-//           id: "11",
+//           id: "rootroot",
 //           name: "CrossEX.sig",
 //           type: "file",
 //           parentId: "root",
 //         },
 //         {
-//           id: "12",
+//           id: "root2",
 //           name: "cypress-testbed",
 //           type: "dir",
 //           parentId: "root",
 //         },
 //         {
-//           id: "13",
+//           id: "root3",
 //           name: "Documents and Settings",
 //           type: "file",
 //           parentId: "root",
 //         },
 //         {
-//           id: "14",
+//           id: "root4",
 //           name: "DumpStack.log",
 //           type: "file",
 //           parentId: "root",
 //         },
 //         {
-//           id: "15",
+//           id: "root5",
 //           name: "DumpStack.log.tmp",
 //           type: "file",
 //           parentId: "root",
 //         },
 //         {
-//           id: "16",
-//           name: "ffmpeg-20200814-a762fd2-win64-static",
+//           id: "root6",
+//           name: "ffmpeg-202008root4-a762fd2-win64-static",
 //           type: "dir",
 //           parentId: "root",
 //         },
 //         {
-//           id: "17",
+//           id: "root7",
 //           name: "gulp-test",
 //           type: "dir",
 //           parentId: "root",
 //         },
 //         {
-//           id: "18",
+//           id: "root8",
 //           name: "hiberfil.sys",
 //           type: "file",
 //           parentId: "root",
 //         },
 //         {
-//           id: "19",
+//           id: "root9",
 //           name: "immer",
 //           type: "dir",
 //           parentId: "root",
@@ -647,7 +647,7 @@ export const state: IState = {
 //           parentId: "root",
 //         },
 //         {
-//           id: "21",
+//           id: "2root",
 //           name: "JS_pattern_test",
 //           type: "dir",
 //           parentId: "root",
@@ -707,7 +707,7 @@ export const state: IState = {
 //           parentId: "root",
 //         },
 //         {
-//           id: "31",
+//           id: "3root",
 //           name: "pagefile.sys",
 //           type: "file",
 //           parentId: "root",
@@ -738,7 +738,7 @@ export const state: IState = {
 //         },
 //         {
 //           id: "36",
-//           name: "Python310",
+//           name: "Python3root0",
 //           type: "dir",
 //           parentId: "root",
 //         },
@@ -767,7 +767,7 @@ export const state: IState = {
 //           parentId: "root",
 //         },
 //         {
-//           id: "41",
+//           id: "4root",
 //           name: "System Volume Information",
 //           type: "dir",
 //           parentId: "root",

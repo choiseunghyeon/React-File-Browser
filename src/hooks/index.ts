@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { useAppDispatch } from "../store/hooks"
-import { changeCurrentNodeId } from "../store/root"
+import { changeCurrentNodeId } from "../store/reducer"
 
 export const useChangeNodeId = () => {
   const dispatch = useAppDispatch()

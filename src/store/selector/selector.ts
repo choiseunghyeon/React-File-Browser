@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from ".."
-import { IFlatMap, INode, ISideBarMap, ISideBarNode, NodeId, NodeType } from "../root"
+import { IFlatMap, INode, ISideBarMap, ISideBarNode, NodeId, NodeType } from "../reducer"
 import { getParentNodeListById, isDirectory } from "../utils"
 
-const selectFlatMap = (state: RootState) => state.flatMap
+export const selectFlatMap = (state: RootState) => state.flatMap
 const selectSideBarMap = (state: RootState) => state.sideBarMap
 export const selectCurrentNodeId = (state: RootState) => {
   return state.currentNodeId
@@ -11,7 +11,7 @@ export const selectCurrentNodeId = (state: RootState) => {
 
 // pass prefix는 reselect에서 parameter 전달용 (state, id) => id의 경우 id 전달용 함수
 const passNodeId = (state: RootState, id: string) => id
-export const selectChildrenById = createSelector([selectFlatMap, passNodeId], (flatMap, id) => {
+export const selectCurrentNodeChildren = createSelector([selectFlatMap, selectCurrentNodeId], (flatMap, id) => {
   const children = getChildrenById(flatMap, id)
   if (!children) return null
 
@@ -43,7 +43,9 @@ export interface IPath {
 export const selectPaths = createSelector(
   [selectFlatMap, selectCurrentNodeId],
 
-  (flatMap: IFlatMap, currentNodeId: string): IPath[] | null => {
+  (flatMap: IFlatMap, currentNodeId: string | null): IPath[] | null => {
+    if (!currentNodeId) return null
+
     const nodeList = getParentNodeListById(flatMap, currentNodeId)
     if (!nodeList) return null
     const paths = nodeList.map(node => {
@@ -55,7 +57,9 @@ export const selectPaths = createSelector(
   }
 )
 
-const getChildrenById = (map, nodeId): INode[] | null => {
+const getChildrenById = (map: IFlatMap, nodeId: string | null): INode[] | null => {
+  if (!nodeId) return null
+
   const node = map[nodeId]
   if (!node.children) return null
 

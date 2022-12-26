@@ -1,11 +1,11 @@
-import { useCallback, useState, memo } from "react"
-import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { useCallback, memo } from "react"
+import { shallowEqual, useDispatch } from "react-redux"
 import { CLOSE_SIDE_NODE_TEST_ID, OPEN_SIDE_NODE_TEST_ID, SIDE_NODE_TEST_ID } from "../constants/test"
-import { useChangeNodeId } from "../hooks"
 import { useAppSelector } from "../store/hooks"
-import { changeCurrentNodeId, hideSideBarNode, rootNodeId, showSideBarNode } from "../store/reducer"
-import { IComponentSideBarNode, selectDirChildrenById, selectNodeById, selectSideBarNodeById } from "../store/selector/selector"
+import { rootNodeId } from "../store/reducer"
+import { selectSideBarNodeById } from "../store/selector/selector"
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io"
+import { changeCurrentNodeId, hideSideBarNode, showSideBarNode } from "../store/action"
 
 const SideBarContainer = function () {
   return (

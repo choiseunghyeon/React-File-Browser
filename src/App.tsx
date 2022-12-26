@@ -6,7 +6,7 @@ import SideBarContainer from "./container/SideBarContainer"
 import StatusbarContainer from "./container/StatusBarContainer"
 import Navigation from "./components/Navigation"
 import { useAppDispatch } from "./store/hooks"
-import { changeCurrentNodeId } from "./store/reducer"
+import { changeCurrentNodeId } from "./store/action"
 
 export default function App() {
   const dispatch = useAppDispatch()

@@ -1,14 +1,6 @@
-import { createAction, createReducer } from "@reduxjs/toolkit"
+import { createReducer } from "@reduxjs/toolkit"
+import { changeCurrentNodeId, hideSideBarNode, showSideBarNode, updateNodes, updateSideNodes } from "./action"
 import { getParentNodeListById } from "./utils"
-
-export interface IState {
-  // init 단계에서 nodeId 없음
-  currentNodeId: string | null
-  sideBarMap: {
-    [id: NodeId]: ISideBarNode
-  }
-  flatMap: IFlatMap
-}
 
 export interface IFlatMap {
   [id: NodeId]: INode
@@ -29,6 +21,12 @@ export interface INode {
   type: NodeType
   parentId: string | null
   children: NodeId[] | null
+}
+export interface IState {
+  // init 단계에서 nodeId 없음
+  currentNodeId: string | null
+  sideBarMap: ISideBarMap
+  flatMap: IFlatMap
 }
 
 export const rootNodeId = "root"
@@ -51,17 +49,6 @@ const root: IState = {
   },
 }
 
-type IUpdateSideNodesPayload = ISideBarNode[]
-type IUpdateNodesPayload = {
-  parentId: string
-  nodes: INode[]
-}
-export const changeCurrentNodeId = createAction<NodeId>("node/changeCurrentNodeId")
-export const showSideBarNode = createAction<NodeId>("node/showSideBarNode")
-export const hideSideBarNode = createAction<NodeId>("node/hideSideBarNode")
-export const updateNodes = createAction<IUpdateNodesPayload>("node/updateNodes")
-export const updateSideNodes = createAction<IUpdateSideNodesPayload>("sideNode/updateSideNodes")
-export const showError = createAction<string>("node/showError")
 // layout
 const rootReducer = createReducer(root, builder => {
   builder

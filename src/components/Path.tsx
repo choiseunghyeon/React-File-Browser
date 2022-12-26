@@ -8,7 +8,7 @@ export interface IPathProps {
 }
 
 export default memo(function Path({ path, onChangeNodeId }: IPathProps) {
-  const { name, hasDirectory, id } = path
+  const { name, hasChildren, id } = path
   const onClick = useCallback(() => {
     onChangeNodeId(id)
   }, [id])
@@ -16,7 +16,7 @@ export default memo(function Path({ path, onChangeNodeId }: IPathProps) {
     <div data-testid={PATH_TEST_ID}>
       <span>
         <span onClick={onClick}>{name}</span>
-        {hasDirectory && (
+        {hasChildren && (
           <div style={{ display: "inline-block" }} data-testid={PATH_LAYER_BUTTON_TEST_ID}>
             <span> {" >"}</span>
           </div>

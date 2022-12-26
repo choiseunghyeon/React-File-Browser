@@ -6,7 +6,6 @@ export function MainContainer() {
     <div className="main-container">
       <MainHeaderContainer />
       <MainBodyContainer />
-      {/* 테스트용 임시 빈 공간 추후 삭제 예정 */}
     </div>
   )
 }

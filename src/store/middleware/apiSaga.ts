@@ -1,7 +1,8 @@
 import { createAction } from "@reduxjs/toolkit"
 import { call, put, select, takeLatest } from "redux-saga/effects"
 import api from "../../api/fileBrowser"
-import { changeCurrentNodeId, IFlatMap, showError, updateNodes, updateSideNodes } from "../reducer"
+import { ActionType, changeCurrentNodeId, showError, updateNodes, updateSideNodes } from "../action"
+import { IFlatMap } from "../reducer"
 import { selectFlatMap } from "../selector/selector"
 import { createNodeFromFile, getAbsolutePathIn, getChilrenDirNodeList } from "../utils"
 const INIT_FILES_FETCH_REQUESTED = "node/FILES_FETCH_REQUESTED"
@@ -109,8 +110,8 @@ function* fetchFilesByNodeIdSaga(action) {
 function* apiSaga() {
   yield takeLatest(INIT_FILES_FETCH_REQUESTED, initFetchFilesSaga)
   yield takeLatest(FILES_FETCH_REQUESTED, fetchFilesSaga)
-  yield takeLatest("node/changeCurrentNodeId", fetchFilesByNodeIdSaga)
-  yield takeLatest("node/showSideBarNode", fetchDirsSaga)
+  yield takeLatest(ActionType.CHANGE_CURRENT_NODE_ID, fetchFilesByNodeIdSaga)
+  yield takeLatest(ActionType.SHOW_SIDE_BAR_NODE, fetchDirsSaga)
 }
 
 export default apiSaga

@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from ".."
-import { IFlatMap, INode, ISideBarMap, ISideBarNode, NodeId } from "../reducer"
-import { getChilrenDirNodeList, getParentNodeListById, isDirectory } from "../utils"
+import { IFlatMap, ISideBarMap, ISideBarNode, NodeId } from "../reducer"
+import { getChildrenById, getChilrenDirNodeList, getParentNodeListById } from "../utils"
 
 export const selectFlatMap = (state: RootState) => state.flatMap
 const selectSideBarMap = (state: RootState) => state.sideBarMap
@@ -54,7 +54,7 @@ export const selectSideBarNodeById = createSelector([selectFlatMap, selectSideBa
 export interface IPath {
   id: NodeId
   name: string
-  hasDirectory: boolean
+  hasChildren: boolean
 }
 export const selectPaths = createSelector(
   [selectFlatMap, selectCurrentNodeId],
@@ -62,23 +62,12 @@ export const selectPaths = createSelector(
   (flatMap: IFlatMap, currentNodeId: string | null): IPath[] | null => {
     if (!currentNodeId) return null
 
-    const nodeList = getParentNodeListById(flatMap, currentNodeId)
-    if (!nodeList) return null
-    const paths = nodeList.map(node => {
-      const children = getChildrenById(flatMap, node.id)
-      const hasDirectory = children ? children.some(child => isDirectory(child.type)) : false
-      return { id: node.id, name: node.name, hasDirectory }
+    const nodes = getParentNodeListById(flatMap, currentNodeId)
+    if (!nodes) return null
+    const paths = nodes.map(node => {
+      const hasChildren = node.children && node.children.length > 0 ? true : false
+      return { id: node.id, name: node.name, hasChildren }
     })
     return paths
   }
 )
-
-const getChildrenById = (map: IFlatMap, nodeId: string | null): INode[] | null => {
-  if (!nodeId) return null
-
-  const node = map[nodeId]
-  if (!node.children) return null
-
-  const children = node.children.map(childNodeId => map[childNodeId])
-  return children
-}

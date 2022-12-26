@@ -66,3 +66,13 @@ export const getChilrenDirNodeList = (map: IFlatMap, nodeId: string): INode[] | 
 
   return dirNodeIds.map(nodeId => map[nodeId])
 }
+
+export const getChildrenById = (map: IFlatMap, nodeId: string | null): INode[] | null => {
+  if (!nodeId) return null
+
+  const node = map[nodeId]
+  if (!node.children) return null
+
+  const children = node.children.map(childNodeId => map[childNodeId])
+  return children
+}

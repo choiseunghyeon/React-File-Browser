@@ -1,7 +1,6 @@
 import { useCallback } from "react"
 import { FILES_TEST_ID, FILE_TYPE_TEST_ID } from "../constants/test"
 import { INode } from "../store/reducer"
-import { isDirectory } from "../store/utils"
 export interface IFolderItemProps {
   node: INode
   onChangeNodeId: Function

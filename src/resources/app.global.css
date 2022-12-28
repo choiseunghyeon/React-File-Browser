@@ -489,10 +489,10 @@ ul.flex li {
 .nav > ul span.icon.left-arrow {
   background: url(../resources/icon/left-arrow.png) no-repeat;
 }
-.nav > ul span.icon.right-arrow:hover {
+.nav > ul span.icon.right-arrow-active {
   background: url(../resources/icon/right-arrow_active.png) no-repeat;
 }
-.nav > ul span.icon.left-arrow:hover {
+.nav > ul span.icon.left-arrow-active {
   background: url(../resources/icon/left-arrow_active.png) no-repeat;
 }
 

@@ -5,9 +5,10 @@ import { getChildrenById, getChilrenDirNodeList, getParentNodeListById } from ".
 
 export const selectFlatMap = (state: RootState) => state.flatMap
 const selectSideBarMap = (state: RootState) => state.sideBarMap
-export const selectCurrentNodeId = (state: RootState) => {
-  return state.currentNodeId
-}
+export const selectCurrentNodeId = (state: RootState) => state.currentNodeId
+export const selectHistory = (state: RootState) => state.history
+export const selectHistoryIndex = (state: RootState) => state.historyIndex
+
 // pass prefix는 reselect에서 parameter 전달용 (state, id) => id의 경우 id 전달용 함수
 const passNodeId = (state: RootState, id: string) => id
 

@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { changeCurrentNodeId, hideSideBarNode, showSideBarNode, updateNodes, updateSideNodes } from "./action"
+import { changeCurrentNodeId, changeCurrentNodeIdByHistory, hideSideBarNode, showSideBarNode, updateNodes, updateSideNodes } from "./action"
 import { getParentNodeListById } from "./utils"
 
 export interface IFlatMap {
@@ -24,9 +24,11 @@ export interface INode {
 }
 export interface IState {
   // init 단계에서 nodeId 없음
-  currentNodeId: string | null
+  currentNodeId: NodeId | null
   sideBarMap: ISideBarMap
   flatMap: IFlatMap
+  history: NodeId[]
+  historyIndex: number
 }
 
 export const rootNodeId = "root"
@@ -47,6 +49,8 @@ const root: IState = {
       children: null,
     },
   },
+  history: [],
+  historyIndex: 0,
 }
 
 // layout
@@ -59,18 +63,14 @@ const rootReducer = createReducer(root, builder => {
 
       const sideNode = state.sideBarMap[nodeId]
       if (sideNode) {
-        // 보여지는 상태가 아니면 보여지도록 수정
-        const parentNodeList = getParentNodeListById(state.flatMap, nodeId)
-        if (!parentNodeList) return
-        // 자기 자신 제외 상위 sideNode showChildren true로 전환
-        parentNodeList.pop()
-        const nodeIds = parentNodeList.map(node => node.id)
-        const sideNodeListWithHideChildren = nodeIds.filter(nodeId => !state.sideBarMap[nodeId].showChildren)
-        sideNodeListWithHideChildren.forEach(nodeId => (state.sideBarMap[nodeId].showChildren = true))
+        showSideBarNodesUntilTargetNodeVisible(nodeId, state.sideBarMap, state.flatMap)
 
-        if (prevNodeId && state.sideBarMap[prevNodeId]) state.sideBarMap[prevNodeId].selected = false
-        state.sideBarMap[nodeId].selected = true
+        selectSideBarNode(prevNodeId, nodeId, state.sideBarMap)
       }
+
+      // historyIndex 기준으로 쌓기
+      // 이미 쌓여있다면 다 없애기
+      stackHistoryFromIndex(nodeId, state.history, state.historyIndex)
     })
     .addCase(showSideBarNode, (state, action) => {
       const nodeId = action.payload
@@ -99,6 +99,24 @@ const rootReducer = createReducer(root, builder => {
       nodes.forEach(node => (state.flatMap[node.id] = node))
     })
 })
+
+function showSideBarNodesUntilTargetNodeVisible(nodeId: string, sideBarMap: ISideBarMap, flatMap: IFlatMap) {
+  // 보여지는 상태가 아니면 보여지도록 수정
+  const parentNodeList = getParentNodeListById(flatMap, nodeId)
+  if (!parentNodeList) return
+  // 자기 자신 제외 상위 sideNode showChildren true로 전환
+  parentNodeList.pop()
+  const nodeIds = parentNodeList.map(node => node.id)
+  const sideNodeListWithHideChildren = nodeIds.filter(nodeId => !sideBarMap[nodeId].showChildren)
+  sideNodeListWithHideChildren.forEach(nodeId => (sideBarMap[nodeId].showChildren = true))
+}
+
+function selectSideBarNode(prevNodeId: string | null, nodeId: string, sideBarMap: ISideBarMap) {
+  if (prevNodeId && sideBarMap[prevNodeId]) sideBarMap[prevNodeId].selected = false
+  sideBarMap[nodeId].selected = true
+}
+
+function stackHistoryFromIndex(nodeId: NodeId, history: NodeId[], index: number) {}
 
 export default rootReducer
 

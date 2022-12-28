@@ -2,6 +2,7 @@ import { createAction } from "@reduxjs/toolkit"
 import { INode, ISideBarNode, NodeId } from "./reducer"
 
 const CHANGE_CURRENT_NODE_ID = "node/changeCurrentNodeId"
+const CHANGE_CURRENT_NODE_ID_BY_HISTORY = "node/changeCurrentNodeIdByHistory"
 const SHOW_SIDE_BAR_NODE = "node/showSideBarNode"
 const HIDE_SIDE_BAR_NODE = "node/hideSideBarNode"
 const UPDATE_NODES = "node/updateNodes"
@@ -15,6 +16,7 @@ type IUpdateNodesPayload = {
   nodes: INode[]
 }
 export const changeCurrentNodeId = createAction<NodeId>(CHANGE_CURRENT_NODE_ID)
+export const changeCurrentNodeIdByHistory = createAction<NodeId>(CHANGE_CURRENT_NODE_ID_BY_HISTORY)
 export const showSideBarNode = createAction<NodeId>(SHOW_SIDE_BAR_NODE)
 export const hideSideBarNode = createAction<NodeId>(HIDE_SIDE_BAR_NODE)
 export const updateNodes = createAction<IUpdateNodesPayload>(UPDATE_NODES)

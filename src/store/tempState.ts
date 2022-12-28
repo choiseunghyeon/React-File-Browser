@@ -48,4 +48,6 @@ export const state: IState = {
       children: null,
     },
   },
+  history: [],
+  historyIndex: 0,
 }

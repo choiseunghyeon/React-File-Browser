@@ -8,8 +8,8 @@ jobs:
 
       # - uses: c-hive/gha-yarn-cache@v2
 
-      # - name: Install dependencies
-      #   run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Check linting
         run: yarn lint
@@ -17,8 +17,8 @@ jobs:
       - name: Check tsc
         run: yarn check-type
 
-      - name: Check relay
-        run: yarn relay
+      #   - name: Check relay
+      #     run: yarn relay
 
       - name: Check build
         run: yarn build

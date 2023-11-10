@@ -19,6 +19,7 @@
     "fs-extra": "^11.1.0",
     "immer": "^9.0.16",
     "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
@@ -30,7 +31,7 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx ./src",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts --expose-gc --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "check-type": "tsc",

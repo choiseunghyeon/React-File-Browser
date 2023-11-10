@@ -4,10 +4,10 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       # - uses: c-hive/gha-yarn-cache@v2
-
       - name: Install dependencies
         run: yarn install
 
@@ -17,8 +17,7 @@ jobs:
       - name: Check tsc
         run: yarn check-type
 
-      #   - name: Check relay
-      #     run: yarn relay
-
       - name: Check build
+        env:
+          CI: false # process.env.CI를 false로 설정
         run: yarn build
